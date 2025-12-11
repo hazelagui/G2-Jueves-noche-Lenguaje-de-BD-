@@ -92,55 +92,7 @@ public class AuditoriaController {
     return resultado;
 }
     
-    /**
-     * Listar auditorías por tabla usando cursor
-     */
-    public List<Auditoria> listarAuditoriasPorTabla(String nombreTabla) {
-        List<Auditoria> auditorias = new ArrayList<>();
-        Connection conn = null;
-        CallableStatement stmt = null;
-        ResultSet rs = null;
-        
-        try {
-            conn = DatabaseConnection.getConnection();
-            
-            String sql = "{call sp_listar_auditoria_por_tabla(?, ?)}";
-            stmt = conn.prepareCall(sql);
-            
-            stmt.setString(1, nombreTabla);
-            stmt.registerOutParameter(2, oracle.jdbc.OracleTypes.CURSOR);
-            stmt.execute();
-            
-            rs = (ResultSet) stmt.getObject(2);
-            
-            while (rs.next()) {
-                Auditoria auditoria = new Auditoria();
-                auditoria.setIdAuditoria(rs.getInt("id_auditoria"));
-                auditoria.setTablaAfectada(rs.getString("tabla_afectada"));
-                auditoria.setOperacion(rs.getString("operacion"));
-                auditoria.setIdRegistro(rs.getInt("id_registro"));
-                auditoria.setUsuario(rs.getString("usuario"));
-                auditoria.setFechaOperacion(rs.getDate("fecha_operacion"));
-                auditoria.setDescripcion(rs.getString("descripcion"));
-                
-                auditorias.add(auditoria);
-            }
-            
-        } catch (SQLException e) {
-            System.err.println("Error al listar auditorías por tabla: " + e.getMessage());
-            e.printStackTrace();
-        } finally {
-            try {
-                if (rs != null) rs.close();
-                if (stmt != null) stmt.close();
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-        }
-        
-        return auditorias;
-    }
-    
+
     /**
      * Listar auditorías por rango de fechas usando cursor
      */
@@ -224,6 +176,81 @@ public class AuditoriaController {
         
         return contador;
     }
+    
+public String obtenerUltimaOperacionGlobal() {
+    Connection conn = null;
+    CallableStatement stmt = null;
+    String resultado = "";
+
+    try {
+        conn = DatabaseConnection.getConnection();
+
+        String sql = "{? = call fn_ultima_operacion_global()}";
+        stmt = conn.prepareCall(sql);
+        stmt.registerOutParameter(1, Types.VARCHAR);
+
+        stmt.execute();
+        resultado = stmt.getString(1);
+
+    } catch (SQLException e) {
+        e.printStackTrace();
+        resultado = "Sin operaciones";
+    } finally {
+        try {
+            if (stmt != null) stmt.close();
+        } catch (SQLException e) { e.printStackTrace(); }
+    }
+
+    return resultado;
+}
+
+
+public List<Auditoria> listarAuditoriasPorTabla(String nombreTabla) {
+    List<Auditoria> auditorias = new ArrayList<>();
+    Connection conn = null;
+    CallableStatement stmt = null;
+    ResultSet rs = null;
+
+    try {
+        conn = DatabaseConnection.getConnection();
+
+        String sql = "{call sp_listar_auditoria_por_tabla(?, ?)}";
+        stmt = conn.prepareCall(sql);
+
+        stmt.setString(1, nombreTabla);
+        stmt.registerOutParameter(2, oracle.jdbc.OracleTypes.CURSOR);
+        stmt.execute();
+
+        rs = (ResultSet) stmt.getObject(2);
+
+        while (rs.next()) {
+            Auditoria auditoria = new Auditoria();
+            auditoria.setIdAuditoria(rs.getInt("id_auditoria"));
+            auditoria.setTablaAfectada(rs.getString("tabla_afectada"));
+            auditoria.setOperacion(rs.getString("operacion"));
+            auditoria.setIdRegistro(rs.getInt("id_registro"));
+            auditoria.setUsuario(rs.getString("usuario"));
+            auditoria.setFechaOperacion(rs.getDate("fecha_operacion"));
+            auditoria.setDescripcion(rs.getString("descripcion"));
+
+            auditorias.add(auditoria);
+        }
+
+    } catch (SQLException e) {
+        System.err.println("Error al listar auditorías por tabla: " + e.getMessage());
+        e.printStackTrace();
+    } finally {
+        try {
+            if (rs != null) rs.close();
+            if (stmt != null) stmt.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    return auditorias;
+}
+
     
     /**
      * Obtener última operación de una tabla usando función
