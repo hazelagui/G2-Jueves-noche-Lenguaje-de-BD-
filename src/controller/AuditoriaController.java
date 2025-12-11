@@ -61,6 +61,37 @@ public class AuditoriaController {
         return auditorias;
     }
     
+    
+    public String obtenerTablaMasActiva() {
+    Connection conn = null;
+    CallableStatement stmt = null;
+    String resultado = "";
+
+    try {
+        conn = DatabaseConnection.getConnection();
+
+        String sql = "{? = call fn_tabla_mas_activa()}";
+        stmt = conn.prepareCall(sql);
+
+        stmt.registerOutParameter(1, Types.VARCHAR);
+        stmt.execute();
+
+        resultado = stmt.getString(1);
+
+    } catch (SQLException e) {
+        e.printStackTrace();
+        resultado = "N/A";
+    } finally {
+        try {
+            if (stmt != null) stmt.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    return resultado;
+}
+    
     /**
      * Listar auditorías por tabla usando cursor
      */
