@@ -785,15 +785,17 @@
             <Component class="javax.swing.JComboBox" name="jComboBox_DespleguedeAuditorias">
               <Properties>
                 <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
-                  <StringArray count="8">
+                  <StringArray count="10">
                     <StringItem index="0" value="TODAS"/>
                     <StringItem index="1" value="ARTISTA"/>
-                    <StringItem index="2" value="EVENTOS"/>
-                    <StringItem index="3" value="COMPRAS"/>
-                    <StringItem index="4" value="ASISTENTES"/>
+                    <StringItem index="2" value="EVENTO"/>
+                    <StringItem index="3" value="COMPRA"/>
+                    <StringItem index="4" value="ASISTENTE"/>
                     <StringItem index="5" value="COMPRA"/>
                     <StringItem index="6" value="PAGO"/>
                     <StringItem index="7" value="ENTRADA"/>
+                    <StringItem index="8" value="ALOJAMIENTO"/>
+                    <StringItem index="9" value=" "/>
                   </StringArray>
                 </Property>
               </Properties>

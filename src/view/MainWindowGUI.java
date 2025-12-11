@@ -837,7 +837,7 @@ private void actualizarEstadisticasAuditoria() {
 
         jLabel3.setText("Registro de Auditoria de Sistemas");
 
-        jComboBox_DespleguedeAuditorias.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "TODAS", "ARTISTA", "EVENTOS", "COMPRAS", "ASISTENTES", "COMPRA", "PAGO", "ENTRADA" }));
+        jComboBox_DespleguedeAuditorias.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "TODAS", "ARTISTA", "EVENTO", "COMPRA", "ASISTENTE", "COMPRA", "PAGO", "ENTRADA", "ALOJAMIENTO", " " }));
 
         jButton_refrescardisplayAuditorias.setText("Refrescar");
         jButton_refrescardisplayAuditorias.addActionListener(new java.awt.event.ActionListener() {
