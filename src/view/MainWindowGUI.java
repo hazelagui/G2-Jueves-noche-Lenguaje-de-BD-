@@ -322,15 +322,10 @@ private void actualizarEstadisticasAuditoria() {
     int total = auditoriaController.listarAuditorias().size();
     jLabel_totalOperacionesDisplay.setText(String.valueOf(total));
 
-    // Última operación (según tabla seleccionada)
-    String tablaSeleccionada = jComboBox_DespleguedeAuditorias.getSelectedItem().toString();
+    // Última operación global
+    String ultimaOperacion = auditoriaController.obtenerUltimaOperacionGlobal();
+    jLabel_ultimaOperacionDisplay.setText(ultimaOperacion);
 
-    if (tablaSeleccionada.equals("TODAS")) {
-        jLabel_ultimaOperacionDisplay.setText("N/A");
-    } else {
-        String ultima = auditoriaController.obtenerUltimaOperacion(tablaSeleccionada);
-        jLabel_ultimaOperacionDisplay.setText(ultima == null ? "N/A" : ultima);
-    }
 
     // *** ESTA ES LA PARTE QUE FALTABA ***
     String tablaMasActiva = auditoriaController.obtenerTablaMasActiva();
@@ -417,7 +412,6 @@ private void actualizarEstadisticasAuditoria() {
         jButton_filtrarAuditorias = new javax.swing.JButton();
         jLabel3 = new javax.swing.JLabel();
         jComboBox_DespleguedeAuditorias = new javax.swing.JComboBox<>();
-        jToggleButton_VerTodaslasAuditorias = new javax.swing.JToggleButton();
         jButton_refrescardisplayAuditorias = new javax.swing.JButton();
         jLabel_estadisticasAuditoria = new javax.swing.JLabel();
         jLabel_totalDeOperacionesTexto = new javax.swing.JLabel();
@@ -428,6 +422,7 @@ private void actualizarEstadisticasAuditoria() {
         jLabel_tablaMasActivaDisplay = new javax.swing.JLabel();
         jScrollPane3 = new javax.swing.JScrollPane();
         jTable_AuditoriasTabla = new javax.swing.JTable();
+        jButton_verTodo = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -842,14 +837,7 @@ private void actualizarEstadisticasAuditoria() {
 
         jLabel3.setText("Registro de Auditoria de Sistemas");
 
-        jComboBox_DespleguedeAuditorias.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "TODAS", "ARTISTAS", "EVENTOS", "COMPRAS", "ASISTENTES", "COMPRA", "PAGO", "ENTRADA" }));
-
-        jToggleButton_VerTodaslasAuditorias.setText("Ver todo");
-        jToggleButton_VerTodaslasAuditorias.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jToggleButton_VerTodaslasAuditoriasActionPerformed(evt);
-            }
-        });
+        jComboBox_DespleguedeAuditorias.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "TODAS", "ARTISTA", "EVENTOS", "COMPRAS", "ASISTENTES", "COMPRA", "PAGO", "ENTRADA" }));
 
         jButton_refrescardisplayAuditorias.setText("Refrescar");
         jButton_refrescardisplayAuditorias.addActionListener(new java.awt.event.ActionListener() {
@@ -885,6 +873,8 @@ private void actualizarEstadisticasAuditoria() {
         ));
         jScrollPane3.setViewportView(jTable_AuditoriasTabla);
 
+        jButton_verTodo.setText("Ver todo");
+
         javax.swing.GroupLayout jPanel_registroAuditoriaGlobalLayout = new javax.swing.GroupLayout(jPanel_registroAuditoriaGlobal);
         jPanel_registroAuditoriaGlobal.setLayout(jPanel_registroAuditoriaGlobalLayout);
         jPanel_registroAuditoriaGlobalLayout.setHorizontalGroup(
@@ -900,7 +890,7 @@ private void actualizarEstadisticasAuditoria() {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jButton_filtrarAuditorias, javax.swing.GroupLayout.PREFERRED_SIZE, 103, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jToggleButton_VerTodaslasAuditorias, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jButton_verTodo, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jButton_refrescardisplayAuditorias, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel_registroAuditoriaGlobalLayout.createSequentialGroup()
@@ -911,11 +901,11 @@ private void actualizarEstadisticasAuditoria() {
                         .addComponent(jLabel_totalDeOperacionesTexto)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jLabel_totalOperacionesDisplay, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(60, 60, 60)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(jLabel_ultimaOperacionTexto, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jLabel_ultimaOperacionDisplay, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(117, 117, 117)
+                        .addComponent(jLabel_ultimaOperacionDisplay, javax.swing.GroupLayout.PREFERRED_SIZE, 262, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(jLabel_tablaMasActivaText)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jLabel_tablaMasActivaDisplay))
@@ -933,8 +923,8 @@ private void actualizarEstadisticasAuditoria() {
                 .addGroup(jPanel_registroAuditoriaGlobalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButton_filtrarAuditorias)
                     .addComponent(jComboBox_DespleguedeAuditorias, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jToggleButton_VerTodaslasAuditorias)
-                    .addComponent(jButton_refrescardisplayAuditorias))
+                    .addComponent(jButton_refrescardisplayAuditorias)
+                    .addComponent(jButton_verTodo))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel_estadisticasAuditoria, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -1210,19 +1200,24 @@ private void actualizarEstadisticasAuditoria() {
     }//GEN-LAST:event_jButton_generarReporteConciertosProximosActionPerformed
 
     private void jButton_filtrarAuditoriasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_filtrarAuditoriasActionPerformed
-        String seleccion = jComboBox_DespleguedeAuditorias.getSelectedItem().toString();
+        AuditoriaController auditoriaController = new AuditoriaController();
 
-    if (seleccion.equals("TODAS")) {
-        cargarTodasLasAuditorias();
-        actualizarEstadisticasAuditoria();
+    String tablaSeleccionada = jComboBox_DespleguedeAuditorias.getSelectedItem().toString();
+
+    // Si el usuario selecciona TODAS → cargar todas las auditorías
+    if (tablaSeleccionada.equals("TODAS")) {
+        jButton_refrescardisplayAuditoriasActionPerformed(null);
         return;
     }
 
+    // Obtener auditorías filtradas
+    List<Auditoria> lista = auditoriaController.listarAuditoriasPorTabla(tablaSeleccionada);
+
+    // Limpiar tabla
     DefaultTableModel model = (DefaultTableModel) jTable_AuditoriasTabla.getModel();
     model.setRowCount(0);
 
-    List<Auditoria> lista = auditoriaController.listarAuditoriasPorTabla(seleccion);
-
+    // Llenar tabla
     for (Auditoria a : lista) {
         model.addRow(new Object[]{
             a.getIdAuditoria(),
@@ -1235,7 +1230,16 @@ private void actualizarEstadisticasAuditoria() {
         });
     }
 
-    actualizarEstadisticasAuditoria();
+    // Actualizar estadísticas
+    jLabel_totalOperacionesDisplay.setText(String.valueOf(lista.size()));
+
+    // Última operación (por tabla)
+    String ultima = auditoriaController.obtenerUltimaOperacion(tablaSeleccionada);
+    jLabel_ultimaOperacionDisplay.setText(ultima);
+
+    // Tabla más activa (global)
+    String masActiva = auditoriaController.obtenerTablaMasActiva();
+    jLabel_tablaMasActivaDisplay.setText(masActiva);
     }//GEN-LAST:event_jButton_filtrarAuditoriasActionPerformed
 
     private void jButton_refrescardisplayAuditoriasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_refrescardisplayAuditoriasActionPerformed
@@ -1263,19 +1267,14 @@ private void actualizarEstadisticasAuditoria() {
     jLabel_totalOperacionesDisplay.setText(String.valueOf(lista.size()));
 
     // 3. Última operación registrada (usa tu función)
-    String ultimaOp = auditoriaController.obtenerUltimaOperacion("AUDITORIA");
+    String ultimaOp = auditoriaController.obtenerUltimaOperacionGlobal();
     jLabel_ultimaOperacionDisplay.setText(ultimaOp);
+
 
     // 4. Tabla más activa (usa tu función fn_tabla_mas_activa)
     String tablaMasActiva = auditoriaController.obtenerTablaMasActiva();
     jLabel_tablaMasActivaDisplay.setText(tablaMasActiva);
     }//GEN-LAST:event_jButton_refrescardisplayAuditoriasActionPerformed
-
-    private void jToggleButton_VerTodaslasAuditoriasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jToggleButton_VerTodaslasAuditoriasActionPerformed
-        // TODO add your handling code here:
-        cargarTodasLasAuditorias();
-        actualizarEstadisticasAuditoria();
-    }//GEN-LAST:event_jToggleButton_VerTodaslasAuditoriasActionPerformed
 
     /**
      * @param args the command line arguments
@@ -1407,6 +1406,8 @@ private void actualizarEstadisticasAuditoria() {
         
 }
     
+    
+    
 
 
 
@@ -1422,6 +1423,7 @@ private void actualizarEstadisticasAuditoria() {
     private javax.swing.JButton jButton_limpiarTextFields;
     private javax.swing.JButton jButton_refrescardisplayAuditorias;
     private javax.swing.JButton jButton_updatearArtista;
+    private javax.swing.JButton jButton_verTodo;
     private javax.swing.JComboBox<String> jComboBox_DespleguedeAuditorias;
     private javax.swing.JComboBox<String> jComboBox_idArtista_panelEvento;
     private javax.swing.JComboBox<String> jComboBox_idLocation_panelEvento;
@@ -1469,7 +1471,6 @@ private void actualizarEstadisticasAuditoria() {
     private javax.swing.JTextField jTextField_NombreArtista;
     private javax.swing.JTextField jTextField_NombreEvento;
     private javax.swing.JTextField jTextField_paisOrigenArtista;
-    private javax.swing.JToggleButton jToggleButton_VerTodaslasAuditorias;
     private javax.swing.JLabel jlabel_tituloInicio;
     // End of variables declaration//GEN-END:variables
 }

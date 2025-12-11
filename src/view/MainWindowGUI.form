@@ -706,7 +706,7 @@
                               <EmptySpace max="-2" attributes="0"/>
                               <Component id="jButton_filtrarAuditorias" min="-2" pref="103" max="-2" attributes="0"/>
                               <EmptySpace max="-2" attributes="0"/>
-                              <Component id="jToggleButton_VerTodaslasAuditorias" min="-2" pref="94" max="-2" attributes="0"/>
+                              <Component id="jButton_verTodo" min="-2" pref="94" max="-2" attributes="0"/>
                               <EmptySpace max="-2" attributes="0"/>
                               <Component id="jButton_refrescardisplayAuditorias" min="-2" pref="89" max="-2" attributes="0"/>
                           </Group>
@@ -719,11 +719,11 @@
                               <Component id="jLabel_totalDeOperacionesTexto" min="-2" max="-2" attributes="0"/>
                               <EmptySpace max="-2" attributes="0"/>
                               <Component id="jLabel_totalOperacionesDisplay" min="-2" pref="40" max="-2" attributes="0"/>
-                              <EmptySpace min="-2" pref="60" max="-2" attributes="0"/>
+                              <EmptySpace type="unrelated" max="-2" attributes="0"/>
                               <Component id="jLabel_ultimaOperacionTexto" min="-2" pref="101" max="-2" attributes="0"/>
                               <EmptySpace max="-2" attributes="0"/>
-                              <Component id="jLabel_ultimaOperacionDisplay" min="-2" pref="89" max="-2" attributes="0"/>
-                              <EmptySpace min="-2" pref="117" max="-2" attributes="0"/>
+                              <Component id="jLabel_ultimaOperacionDisplay" min="-2" pref="262" max="-2" attributes="0"/>
+                              <EmptySpace type="unrelated" max="-2" attributes="0"/>
                               <Component id="jLabel_tablaMasActivaText" min="-2" max="-2" attributes="0"/>
                               <EmptySpace max="-2" attributes="0"/>
                               <Component id="jLabel_tablaMasActivaDisplay" min="-2" max="-2" attributes="0"/>
@@ -746,8 +746,8 @@
                       <Group type="103" groupAlignment="3" attributes="0">
                           <Component id="jButton_filtrarAuditorias" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="jComboBox_DespleguedeAuditorias" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="jToggleButton_VerTodaslasAuditorias" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="jButton_refrescardisplayAuditorias" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="jButton_verTodo" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace max="-2" attributes="0"/>
                       <Component id="jLabel_estadisticasAuditoria" min="-2" pref="28" max="-2" attributes="0"/>
@@ -787,7 +787,7 @@
                 <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
                   <StringArray count="8">
                     <StringItem index="0" value="TODAS"/>
-                    <StringItem index="1" value="ARTISTAS"/>
+                    <StringItem index="1" value="ARTISTA"/>
                     <StringItem index="2" value="EVENTOS"/>
                     <StringItem index="3" value="COMPRAS"/>
                     <StringItem index="4" value="ASISTENTES"/>
@@ -800,14 +800,6 @@
               <AuxValues>
                 <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
               </AuxValues>
-            </Component>
-            <Component class="javax.swing.JToggleButton" name="jToggleButton_VerTodaslasAuditorias">
-              <Properties>
-                <Property name="text" type="java.lang.String" value="Ver todo"/>
-              </Properties>
-              <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jToggleButton_VerTodaslasAuditoriasActionPerformed"/>
-              </Events>
             </Component>
             <Component class="javax.swing.JButton" name="jButton_refrescardisplayAuditorias">
               <Properties>
@@ -876,6 +868,11 @@
                 </Component>
               </SubComponents>
             </Container>
+            <Component class="javax.swing.JButton" name="jButton_verTodo">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Ver todo"/>
+              </Properties>
+            </Component>
           </SubComponents>
         </Container>
       </SubComponents>
