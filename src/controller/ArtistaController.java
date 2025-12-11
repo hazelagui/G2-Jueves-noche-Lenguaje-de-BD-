@@ -60,72 +60,64 @@ public class ArtistaController {
      * Actualizar un artista usando procedimiento almacenado
      */
     public boolean actualizarArtista(Artista artista) {
-        Connection conn = null;
-        CallableStatement stmt = null;
-        
-        try {
-            conn = DatabaseConnection.getConnection();
-            
-            // Llamar al procedimiento almacenado sp_actualizar_artista
-            String sql = "{call sp_actualizar_artista(?, ?, ?, ?)}";
-            stmt = conn.prepareCall(sql);
-            
-            stmt.setInt(1, artista.getIdArtista());
-            stmt.setString(2, artista.getNombre());
-            stmt.setString(3, artista.getGeneroMusical());
-            stmt.setString(4, artista.getPaisOrigen());
-            
-            stmt.execute();
-            
-            System.out.println("Artista actualizado exitosamente");
-            return true;
-            
-        } catch (SQLException e) {
-            System.err.println("Error al actualizar artista: " + e.getMessage());
-            e.printStackTrace();
-            return false;
-        } finally {
-            try {
-                if (stmt != null) stmt.close();
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-        }
+    Connection conn = null;
+    CallableStatement stmt = null;
+
+    try {
+        conn = DatabaseConnection.getConnection();
+
+        String sql = "{call sp_actualizar_artista(?, ?, ?, ?, ?)}"; 
+        stmt = conn.prepareCall(sql);
+
+        stmt.setInt(1, artista.getIdArtista());
+        stmt.setString(2, artista.getNombre());
+        stmt.setString(3, artista.getGeneroMusical());
+        stmt.setString(4, artista.getPaisOrigen());
+
+        // OUT: filas afectadas
+        stmt.registerOutParameter(5, Types.INTEGER);
+
+        stmt.execute();
+
+        int filas = stmt.getInt(5);
+        return filas > 0;
+
+    } catch (SQLException e) {
+        e.printStackTrace();
+        return false;
+    } finally {
+        try { if (stmt != null) stmt.close(); } catch (SQLException e) {}
     }
+}
+
     
     /**
      * Eliminar un artista usando procedimiento almacenado
      */
-    public boolean eliminarArtista(int idArtista) {
-        Connection conn = null;
-        CallableStatement stmt = null;
-        
-        try {
-            conn = DatabaseConnection.getConnection();
-            
-            // Llamar al procedimiento almacenado sp_eliminar_artista
-            String sql = "{call sp_eliminar_artista(?)}";
-            stmt = conn.prepareCall(sql);
-            
-            stmt.setInt(1, idArtista);
-            stmt.execute();
-            
-            System.out.println("Artista eliminado exitosamente");
-            return true;
-            
-        } catch (SQLException e) {
-            System.err.println("Error al eliminar artista: " + e.getMessage());
-            e.printStackTrace();
-            return false;
-        } finally {
-            try {
-                if (stmt != null) stmt.close();
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-        }
+public boolean eliminarArtista(int idArtista) {
+    Connection conn = null;
+    CallableStatement stmt = null;
+
+    try {
+        conn = DatabaseConnection.getConnection();
+
+        String sql = "{call sp_eliminar_artista(?, ?)}";
+        stmt = conn.prepareCall(sql);
+
+        stmt.setInt(1, idArtista);
+        stmt.registerOutParameter(2, Types.NUMERIC);
+
+        stmt.execute();
+
+        int filas = stmt.getInt(2);
+
+        return filas > 0;
+
+    } catch (SQLException e) {
+        e.printStackTrace();
+        return false;
     }
-    
+}
     /**
      * Listar todos los artistas usando cursor
      */
