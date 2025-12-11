@@ -6,6 +6,7 @@ import java.util.Date;
  * Clase modelo para representar un registro de Auditoría
  */
 public class Auditoria {
+    //
     private int idAuditoria;
     private String tablaAfectada;
     private String operacion;
