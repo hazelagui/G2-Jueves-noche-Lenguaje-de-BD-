@@ -73,9 +73,10 @@ public class Artista {
     public void setCreadoPor(String creadoPor) {
         this.creadoPor = creadoPor;
     }
-    
-    @Override
-    public String toString() {
-        return nombre + " (" + generoMusical + ")";
+        
+    public String toString(){
+        return "ID: "+idArtista +" Nombre: " + nombre ;
     }
 }
+
+
